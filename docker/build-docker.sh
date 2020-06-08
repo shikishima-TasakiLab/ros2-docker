@@ -42,9 +42,8 @@ fi
 if [[ ${TF_INSTALL} != "off" ]]; then
     docker build \
         -f ${BUILD_DIR}/src/Dockerfile.tensorflow \
-        -t jetson/ros2:${MAJOR_VERSION,,}.${MINOR_VERSION}-dashing-tf${TF_VERSION[${TF_INSTALL}]} \
-        --build-arg L4T_VERSION="${MAJOR_VERSION,,}.${MINOR_VERSION}" \
-        --build-arg TENSORFLOW_WHL=${TF_FILE[${TF_INSTALL}]} \
+        -t ros2:dashing-tf${TF_INSTALL} \
+        --build-arg TF_VERSION=${TF_INSTALL} \
         ${BUILD_DIR}/src
     
     if [[ $? != 0 ]]; then
