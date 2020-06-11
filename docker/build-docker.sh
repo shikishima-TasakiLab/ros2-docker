@@ -1,14 +1,15 @@
 #!/bin/bash
 BUILD_DIR=$(dirname $(readlink -f $0))
 
-TF_INSTALL="off"
+BASE_IMAGE="nvidia/opengl:1.0-glvnd-runtime-ubuntu18.04"
 
 function usage_exit {
   cat <<_EOS_ 1>&2
   Usage: $PROG_NAME [OPTIONS...]
   OPTIONS:
     -h, --help                  このヘルプを表示
-    --tensorflow VERSION        TensorFlowのバージョンを指定（既定値：off）
+    -b, --base DOCKER_IMAGE     ベースとするイメージを指定する
+                                (既定値：nvidia/opengl:1.0-glvnd-runtime-ubuntu18.04)
 _EOS_
     exit 1
 }
@@ -16,12 +17,8 @@ _EOS_
 while (( $# > 0 )); do
     if [[ $1 == "--help" ]] || [[ $1 == "-h" ]]; then
         usage_exit
-    elif [[ $1 == "--tensorflow" ]]; then
-        if [[ $2 == "off" ]]; then
-            TF_INSTALL="off"
-        else
-            TF_INSTALL=$2
-        fi
+    elif [[ $1 == "--base" ]] || [[ $1 == "-b" ]]; then
+        BASE_IMAGE=$2
         shift 2
     else
         echo "無効なパラメータ: $1"
@@ -31,23 +28,10 @@ done
 
 docker build \
     -t ros2:dashing \
-    --build-arg BASE_IMAGE="nvidia/opengl:1.0-glvnd-runtime-ubuntu18.04" \
+    --build-arg BASE_IMAGE=${BASE_IMAGE} \
     ${BUILD_DIR}/src
 
 if [[ $? != 0 ]]; then
     echo "エラーにより中断しました．"
     exit 1
-fi
-
-if [[ ${TF_INSTALL} != "off" ]]; then
-    docker build \
-        -f ${BUILD_DIR}/src/Dockerfile.tensorflow \
-        -t ros2:dashing-tf${TF_INSTALL} \
-        --build-arg TF_VERSION=${TF_INSTALL} \
-        ${BUILD_DIR}/src
-    
-    if [[ $? != 0 ]]; then
-        echo "エラーにより中断しました．"
-        exit 1
-    fi
 fi
