@@ -125,6 +125,7 @@ RUN apt-get update && \
         python3-argcomplete \
         ros-dashing-rmw-opensplice-cpp \
         ros-dashing-rmw-connext-cpp \
+        ros-dashing-camera-info-manager \
         ros-dashing-ros1-bridge \
         python3-colcon-common-extensions
 
