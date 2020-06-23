@@ -64,6 +64,7 @@ RUN apt-get update && \
         python3-opencv \
         tmux \
         v4l-utils \
+        rapidjson-dev \
         nano \
         wget && \
     apt-get clean && \
@@ -121,17 +122,19 @@ RUN apt-get update && \
         ros-melodic-tf2-msgs \
         ros-melodic-trajectory-msgs \
         ros-melodic-visualization-msgs \
-        ros-dashing-desktop \
+        ros-${ROS_DISTRO}-desktop \
         python3-argcomplete \
-        ros-dashing-rmw-opensplice-cpp \
-        ros-dashing-rmw-connext-cpp \
-        ros-dashing-camera-info-manager \
-        ros-dashing-ros1-bridge \
-        python3-colcon-common-extensions
+        ros-${ROS_DISTRO}-rmw-opensplice-cpp \
+        ros-${ROS_DISTRO}-rmw-connext-cpp \
+        ros-${ROS_DISTRO}-camera-info-manager \
+        ros-${ROS_DISTRO}-ros1-bridge \
+        python3-colcon-common-extensions && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 USER ${USER_NAME}
 
-RUN echo 'source /opt/ros/dashing/setup.bash' >> /home/${USER_NAME}/.bashrc && \
+RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /home/${USER_NAME}/.bashrc && \
     echo "if [[ -f \"/home/${USER_NAME}/colcon_ws/install/setup.bash\" ]]; then" >> /home/${USER_NAME}/.bashrc && \
     echo "    source /home/${USER_NAME}/colcon_ws/install/setup.bash" >> /home/${USER_NAME}/.bashrc && \
     echo 'fi' >> /home/${USER_NAME}/.bashrc && \

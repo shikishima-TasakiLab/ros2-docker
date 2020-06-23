@@ -10,7 +10,6 @@ if [ -v USER_ID ] && [ "$USER_ID" != "$DEFAULT_USER_ID" ]; then
 fi
 
 cd /home/ros2
-source /opt/ros/dashing/setup.bash
 
 if [ -z "$1" ]; then
     su ros2 -c "/bin/bash"

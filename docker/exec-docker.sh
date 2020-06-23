@@ -1,13 +1,9 @@
 #!/bin/bash
 
-ntr_arr=( $(echo $(cat /etc/nv_tegra_release) | tr -s ',' ' ') )
-MAJOR_VERSION=${ntr_arr[1]}
-MINOR_VERSION=${ntr_arr[4]}
-
 PROG_NAME=$(basename $0)
 RUN_DIR=$(dirname $(readlink -f $0))
 
-DOCKER_IMAGE="jetson/ros2:${MAJOR_VERSION,,}.${MINOR_VERSION}-dashing"
+DOCKER_IMAGE="ros2:eloquent"
 
 function usage_exit {
   cat <<_EOS_ 1>&2

@@ -2,6 +2,8 @@
 BUILD_DIR=$(dirname $(readlink -f $0))
 
 BASE_IMAGE="nvidia/opengl:1.0-glvnd-runtime-ubuntu18.04"
+ROS_DISTRO="dashing"
+#ROS_DISTRO="eloquent"
 
 function usage_exit {
   cat <<_EOS_ 1>&2
@@ -27,8 +29,9 @@ while (( $# > 0 )); do
 done
 
 docker build \
-    -t ros2:dashing \
+    -t ros2:${ROS_DISTRO} \
     --build-arg BASE_IMAGE=${BASE_IMAGE} \
+    --build-arg ROS_DISTRO=${ROS_DISTRO} \
     ${BUILD_DIR}/src
 
 if [[ $? != 0 ]]; then
