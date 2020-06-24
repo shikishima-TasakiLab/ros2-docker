@@ -3,7 +3,8 @@
 PROG_NAME=$(basename $0)
 RUN_DIR=$(dirname $(readlink -f $0))
 
-DOCKER_IMAGE="ros2:eloquent"
+#DOCKER_IMAGE="ros2:eloquent"
+DOCKER_IMAGE="ros2:dashing"
 
 function usage_exit {
   cat <<_EOS_ 1>&2
